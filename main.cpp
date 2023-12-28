@@ -1,4 +1,6 @@
 #include <Novice.h>
+#include "Player.h"
+#include "PlayerParticle.h"
 
 const char kWindowTitle[] = "AL2_02_イシカワタケシ";
 
@@ -11,6 +13,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
 	char preKeys[256] = {0};
+
+	Player *player = new Player({ 640,400 }, { 100,100 }, { 255,255,255,255 }, true);
+	PlayerParticle *pParticle[20];
+	for (int i = 0; i < 20; i++) {
+		pParticle[i] = new PlayerParticle(player);
+	}
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -25,6 +33,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 
+		player->Update(keys);
+		for (int i = 0; i < 20; i++) {
+			if (pParticle[i]->GetIsAlive() == false) {
+				pParticle[i]->Spawn();
+				break;
+			}
+		}
+		for (int i = 0; i < 20; i++) {
+			pParticle[i]->Update(keys);
+		}
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -32,6 +51,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
+
+		player->Draw();
+		for (int i = 0; i < 20; i++) {
+			pParticle[i]->Draw();
+		}
+
 
 		///
 		/// ↑描画処理ここまで
