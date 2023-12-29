@@ -11,6 +11,7 @@ public:
 	int GetColor(Color color);
 	
 	Vector2 GetPos() { return pos_; };
+	Vector2 GetSize() { return size_; };
 
 	bool GetIsAlive() { return isAlive_; };
 	void Spawn();

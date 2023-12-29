@@ -26,7 +26,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	ShockWave *shockWaveLeft[5];
 	for (int i = 0; i < 5; i++) {
-		shockWaveLeft[i] = new ShockWave({ 5,0 });
+		shockWaveLeft[i] = new ShockWave(player,{ 0.3f,-0.3f });
+	}
+	ShockWave *shockWaveRight[5];
+	for (int i = 0; i < 5; i++) {
+		shockWaveRight[i] = new ShockWave(player, { -0.3f,-0.3f });
 	}
 
 	Cloud *cloud[5];
@@ -41,6 +45,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		rain[i] = new Rain();
 	}
 
+	int paperGH = Novice::LoadTexture("./Resources/antiquePaper.jpg");
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -65,6 +70,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			cloud[4] = new Cloud({ 680,70 }, { 70,50 }, { 255,255,255,255 });
 			for (int i = 0; i < 10; i++) {
 				pParticle[i] = new PlayerParticle(player);
+			}
+			for (int i = 0; i < 5; i++) {
+				shockWaveLeft[i] = new ShockWave(player, { 0.5f,-0.5f });
+				shockWaveRight[i] = new ShockWave(player, { -0.5f,-0.5f });
 			}
 		}
 
@@ -99,6 +108,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			rain[i]->Update();
 		}
 
+		//衝撃波の更新処理
+		for (int i = 0; i < 5; i++) {
+			if (shockWaveLeft[i]->GetIsAlive() == false) {
+				shockWaveLeft[i]->Spawn(keys);
+				break;
+			}
+		}
+		for (int i = 0; i < 5; i++) {
+			if (shockWaveRight[i]->GetIsAlive() == false) {
+				shockWaveRight[i]->Spawn(keys);
+				break;
+			}
+		}
+		for (int i = 0; i < 5; i++) {
+			shockWaveLeft[i]->Update();
+		}
+		for (int i = 0; i < 5; i++) {
+			shockWaveRight[i]->Update();
+		}
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -109,21 +138,41 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		Novice::DrawBox(0, 0, 1280, 720, 0.0f, 0xf7b977ff, kFillModeSolid);
 		Novice::DrawLine(0, 470, 1280, 470, 0x000000ff);
+		//画像のブレンド
+		Novice::SetBlendMode(kBlendModeAdd);
+		Novice::DrawSprite(0, 0, paperGH, 1, 1, 0.0f, 0xffffff44);
+		Novice::SetBlendMode(kBlendModeNone);
 
+		//残像の描画
 		for (int i = 0; i < 10; i++) {
 			pParticle[i]->Draw();
 		}
-
+		//プレイヤーの描画
 		player->Draw();
-
+		//雲の描画
 		for (int i = 0; i < 5; i++) {
 			cloud[i]->Draw();
 		}
-
+		//雨の描画
 		for (int i = 0; i < 100; i++) {
 			rain[i]->Draw();
 		}
+		//衝撃波の描画
+		for (int i = 0; i < 5; i++) {
+			shockWaveLeft[i]->Draw();
+		}
+		for (int i = 0; i < 5; i++) {
+			shockWaveRight[i]->Draw();
+		}
 
+		//文字列を見やすくするための背景
+		Novice::DrawBox(10, 500, 400, 40, 0.0f, 0x000000ff, kFillModeSolid);
+		
+		//デバッグ用文字列
+		
+		Novice::ScreenPrintf(10, 500, "WASD or UP,LEFT,RIGHT,DOWN : Move Player");
+		Novice::ScreenPrintf(10, 520, "R:Reset");
+		
 		///
 		/// ↑描画処理ここまで
 		///

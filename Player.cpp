@@ -3,10 +3,10 @@
 
 Player::Player(Vector2 pos, Vector2 size, Color color, bool isAlive) {
 	pos_ = pos;
-	velocity_ = { 10,10 };
+	velocity_ = { 10,1 };
 	size_ = size;
 	color_ = color;
-	gravity_ = 4.0f;
+	gravity_ = 1.0f;
 	isAlive_ = isAlive;
 	gh_ = Novice::LoadTexture("white1x1.png");
 }
@@ -33,8 +33,11 @@ void Player::Update(char *keys) {
 	if (keys[DIK_D] || keys[DIK_RIGHT]) {
 		pos_.x += velocity_.x;
 	}
-	if (keys[DIK_W]&& pos_.y == 400) {
-		velocity_.y = -50.0f;
+	if ((keys[DIK_W] ||keys[DIK_UP]) && pos_.y == 400) {
+		velocity_.y = -30.0f;
+	}
+	if (keys[DIK_S] || keys[DIK_DOWN]) {
+		velocity_.y = 50.0f;
 	}
 	velocity_.y += gravity_;
 	pos_.y += velocity_.y;

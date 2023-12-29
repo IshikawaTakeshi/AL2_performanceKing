@@ -7,7 +7,7 @@ Rain::Rain() {
 	endPos_ = { pos_.x + 20,pos_.y+20 };
 	size_ = { 0,0 };
 	gravity_ = 4.0f;
-	color_ = { 255,100,100,255 };
+	color_ = {0,0,0,255 };
 	isAlive_ = false;
 }
 

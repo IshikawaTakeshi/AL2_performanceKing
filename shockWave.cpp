@@ -4,10 +4,11 @@
 
 
 
-ShockWave::ShockWave(Vector2 acceleration) {
-	player_ = new Player({0,0},{0,0},{0,0,0,0},false);
+ShockWave::ShockWave(Player *player,Vector2 acceleration) {
+	player_ = player;
 	pos_ = { -50,-50 };
 	size_ = { 25, 25 };
+	velocity_ = { 0,0 };
 	acceleration_ = acceleration;
 	color_ = { 255,255,255,255 };
 	isAlive_ = false;
@@ -25,19 +26,27 @@ void ShockWave::VertexUpdate() {
 	vertex_[RB].y = pos_.y + size_.y / 2;
 }
 
-void ShockWave::Spawn() {
+void ShockWave::Spawn(char *keys) {
 	if (isAlive_ == false) {
-		pos_ = player_->GetPos();
-		isAlive_ = true;
+		pos_.x = player_->GetPos().x + 35;
+		pos_.y = player_->GetPos().y + 50;
+		velocity_ = { 0,0 };
+		VertexUpdate();
+		if (keys[DIK_S] && player_->GetPos().y >= 400) {
+			isAlive_ = true;
+		}
+		
 	}
 }
 
 void ShockWave::Update() {
 	if (isAlive_ == true) {
+		VertexUpdate();
 		velocity_.x += acceleration_.x;
 		pos_.x += velocity_.x;
-		color_.alpha--;
+		color_.alpha -= 5;
 		if (color_.alpha <= 0) {
+			color_.alpha = 255;
 			isAlive_ = false;
 		}
 	}
@@ -45,27 +54,32 @@ void ShockWave::Update() {
 
 void ShockWave::Draw() {
 	if (acceleration_.x <= 0.0f) {
-		Novice::DrawTriangle(
-			static_cast<int>(vertex_[LT].x),
-			static_cast<int>(vertex_[LT].y),
-			static_cast<int>(vertex_[LB].x),
-			static_cast<int>(vertex_[LB].y),
-			static_cast<int>(vertex_[RB].x),
-			static_cast<int>(vertex_[RB].y),
-			GetColor(color_),
-			kFillModeSolid
-		);
+		if (isAlive_ == true) {
+			Novice::DrawTriangle(
+				static_cast<int>(vertex_[LT].x),
+				static_cast<int>(vertex_[LT].y),
+				static_cast<int>(vertex_[LB].x),
+				static_cast<int>(vertex_[LB].y),
+				static_cast<int>(vertex_[RB].x),
+				static_cast<int>(vertex_[RB].y),
+				GetColor(color_),
+				kFillModeSolid
+			);
+		}
+		
 	} else {
-		Novice::DrawTriangle(
-			static_cast<int>(vertex_[RT].x),
-			static_cast<int>(vertex_[RT].y),
-			static_cast<int>(vertex_[LB].x),
-			static_cast<int>(vertex_[LB].y),
-			static_cast<int>(vertex_[RB].x),
-			static_cast<int>(vertex_[RB].y),
-			GetColor(color_),
-			kFillModeSolid
-		);
+		if (isAlive_ == true) {
+			Novice::DrawTriangle(
+				static_cast<int>(vertex_[RT].x),
+				static_cast<int>(vertex_[RT].y),
+				static_cast<int>(vertex_[LB].x),
+				static_cast<int>(vertex_[LB].y),
+				static_cast<int>(vertex_[RB].x),
+				static_cast<int>(vertex_[RB].y),
+				GetColor(color_),
+				kFillModeSolid
+			);
+		}
 	}
 	
 }

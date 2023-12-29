@@ -5,7 +5,7 @@
 class Player;
 
 class ShockWave :public Particle {
-
+public:
 	enum vertex {
 		LT,
 		RT,
@@ -13,9 +13,9 @@ class ShockWave :public Particle {
 		RB
 	};
 
-	ShockWave(Vector2 acceleration);
+	ShockWave(Player *player,Vector2 acceleration);
 	void VertexUpdate();
-	void Spawn() override;
+	void Spawn(char *keys);
 	void Update();
 	void Draw();
 private:

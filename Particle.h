@@ -5,7 +5,7 @@
 class Particle {
 public:
 	int GetColor(Color color);
-	bool GetIsAlive_() { return isAlive_; };
+	bool GetIsAlive() { return isAlive_; };
 	virtual void Spawn();
 	virtual void Update();
 	virtual void Draw();
