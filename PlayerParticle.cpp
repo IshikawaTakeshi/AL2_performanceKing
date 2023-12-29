@@ -1,31 +1,47 @@
 ﻿#include "PlayerParticle.h"
 #include "Player.h"
+#include "Easing.h"
 
 PlayerParticle::PlayerParticle(Player *player) {
 	player_ = player;
 	pos_ = { -150,-150 };
-	size_ = { 100,100 };
-	color_ = { 255,255,255,255 };
+	size_ = { 70,70 };
+	color_ = { 0,0,0,255 };
 	isAlive_ = false;
+	timer_ = 0;
 }
 
 void PlayerParticle::Spawn() {
 	if (isAlive_ == false) {
-		for (int i = 0; i < spawnMax_; i++) {
-			beforePos_[i] = beforePos_[i + 1];
-		}
-		beforePos_[0] = player_->GetPos();
-		//フラグをtrueに
+		pos_ = player_->GetPos();
 		isAlive_ = true;
 	}
 }
 
 void PlayerParticle::Update(char *keys) {
 	if (isAlive_ == true) {
+		timer_++;
+
+		//スペースキーが押された時
 		if (keys[DIK_SPACE]) {
+			//サイズを変える
+
+
+			//残像の色を変える
+			color_.green += 10;
+			if (color_.green >= 255) {
+				color_.green = 0;
+			}
+
+			//hitKeyフラグをtrueに
 			isHitSpaceKey_ = true;
-		}else {
+		} else {
+			//押されていないときはfalseに
 			isHitSpaceKey_ = false;
+		}
+		if (timer_ >= 10) {
+			timer_ = 0;
+			isAlive_ = false;
 		}
 	}
 }
@@ -33,18 +49,15 @@ void PlayerParticle::Update(char *keys) {
 void PlayerParticle::Draw() {
 	if (isHitSpaceKey_) {
 		if (isAlive_ == true) {
-			//残像を出す
-			for (int i = 0; i < spawnMax_; i++) {
-				Novice::DrawBox(
-					static_cast<int>(beforePos_[i].x),
-					static_cast<int>(beforePos_[i].y),
-					static_cast<int>(size_.x),
-					static_cast<int>(size_.y),
-					0.0f,
-					GetColor({ 255 - i * 10,255 - i * 10,255 - i * 10,255 }),
-					kFillModeWireFrame
-				);
-			}
+			Novice::DrawBox(
+				static_cast<int>(pos_.x),
+				static_cast<int>(pos_.y),
+				static_cast<int>(size_.x),
+				static_cast<int>(size_.y),
+				0.0f,
+				GetColor({ color_.red,color_.green,color_.blue,color_.alpha }),
+				kFillModeSolid
+			);
 		}
 	}
 }
