@@ -7,12 +7,11 @@ public:
 	bool GetIsAlive() { return isAlive_; };
 
 	void Spawn() override;
-	void Update(char *keys) override;
+	void Update();
 	void Draw() override;
 private:
 	Player *player_;
 	const int spawnMax_ = 10;
-	bool isHitSpaceKey_ = false;
 	int timer_;
 };
 

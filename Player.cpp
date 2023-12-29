@@ -11,6 +11,8 @@ Player::Player(Vector2 pos, Vector2 size, Color color, bool isAlive) {
 	gh_ = Novice::LoadTexture("white1x1.png");
 }
 
+
+
 int Player::GetColor(Color color) {
 	unsigned int result;
 	color.red <<= 24;

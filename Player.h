@@ -20,7 +20,6 @@ public:
 private:
 	Vector2 pos_;
 	Vector2 size_;
-	//Vector2 vertex_[4];
 	Vector2 velocity_;
 	Color color_;
 	//BlendMode blendMode_ = kBlendModeNone;

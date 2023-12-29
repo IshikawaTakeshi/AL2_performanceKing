@@ -14,10 +14,8 @@ int Particle::GetColor(Color color) {
 void Particle::Spawn() {
 }
 
-void Particle::Update(char *keys) {
-	if (keys[DIK_0]) {
+void Particle::Update() {
 
-	}
 }
 
 void Particle::Draw() {

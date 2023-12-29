@@ -50,6 +50,12 @@
     <ClCompile Include="Cloud.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
+    <ClCompile Include="Rain.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="ShockWave.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -129,5 +135,7 @@
     <ClInclude Include="PlayerParticle.h" />
     <ClInclude Include="Easing.h" />
     <ClInclude Include="Cloud.h" />
+    <ClInclude Include="Rain.h" />
+    <ClInclude Include="ShockWave.h" />
   </ItemGroup>
 </Project>

@@ -4,6 +4,8 @@
 class Cloud {
 public:
 	Cloud(Vector2 pos,Vector2 size,Color color);
+	Vector2 GetPos() { return pos_; };
+	Vector2 GetSize() { return size_; };
 	int GetColor(Color color);
 	void Update();
 	void Draw();

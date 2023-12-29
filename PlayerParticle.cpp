@@ -18,36 +18,25 @@ void PlayerParticle::Spawn() {
 	}
 }
 
-void PlayerParticle::Update(char *keys) {
+void PlayerParticle::Update() {
 	if (isAlive_ == true) {
 		timer_++;
 
-		//スペースキーが押された時
-		if (keys[DIK_SPACE]) {
-			//サイズを変える
-
-
-			//残像の色を変える
-			color_.green += 10;
-			if (color_.green >= 255) {
-				color_.green = 0;
-			}
-
-			//hitKeyフラグをtrueに
-			isHitSpaceKey_ = true;
-		} else {
-			//押されていないときはfalseに
-			isHitSpaceKey_ = false;
-		}
-		if (timer_ >= 10) {
-			timer_ = 0;
-			isAlive_ = false;
+		//残像の色を変える
+		color_.green += 10;
+		if (color_.green >= 255) {
+			color_.green = 0;
 		}
 	}
+
+	if (timer_ >= 10) {
+		timer_ = 0;
+		isAlive_ = false;
+	}
+
 }
 
 void PlayerParticle::Draw() {
-	if (isHitSpaceKey_) {
 		if (isAlive_ == true) {
 			Novice::DrawBox(
 				static_cast<int>(pos_.x),
@@ -59,7 +48,6 @@ void PlayerParticle::Draw() {
 				kFillModeSolid
 			);
 		}
-	}
 }
 
 
